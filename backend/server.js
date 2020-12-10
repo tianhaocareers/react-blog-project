@@ -11,4 +11,4 @@ const PORT = process.env.PORT || 4000
 app.listen(PORT, () => console.log(`Server started on port: ${PORT}`))
 
 //set mongoose
-mongoose.connect(;)
+mongoose.connect(PORT, () => console.log(`Server started on PORT : ${PORT}`))

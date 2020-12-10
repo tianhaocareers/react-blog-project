@@ -11,7 +11,10 @@ const PORT = process.env.PORT || 4000
 console.log("Starting server")
 app.listen(PORT, () => console.log(`Server started on port: ${PORT}`))
 
-//set mongoose
+//set up routes
+app.use('/posts', require("./routes/postRoutes"))
+
+//set up mongoose
 console.log("Connecting to MongoDB")
 mongoose.connect("mongodb://127.0.0.1:27017/react-blog-project", {
     useNewUrlParser: true,

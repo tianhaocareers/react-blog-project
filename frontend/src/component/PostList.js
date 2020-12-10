@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
-import axios from 'axios'
+import { Layout, Menu, Breadcrumb } from 'antd';
+import './PostList.css';
+import 'antd/dist/antd.css';
+import { mapStateToProps, mapDispatchToProps } from '../mapToProps'
+import { connect } from 'react-redux'
+const { Header, Content, Footer } = Layout;
 
-export default class PostList extends Component {
+class PostList extends Component {
     constructor() {
         super()
         this.state = {
@@ -10,20 +15,29 @@ export default class PostList extends Component {
     }
 
     componentDidMount() {
-        const fetchData = async () => {
-            const res = await axios.get("http://localhost:4000/posts")
-            this.setState({ posts: res.data })
-            console.log(this.state)
-        }
-        fetchData()
+        console.warn("ComponentDidMount")
+        this.props.onReadPost()
+        this.setState({ posts: this.props.posts })
+    }
+
+    static getDerviedStateFromProps(props, state) {
+        console.warn("getDerviedStateFromProps", props, state)
+        return 0
     }
 
     render() {
-        let posts = this.state.posts.map(data => <p key={data._id}>{data.title}</p>)
+        console.warn("render")
+        let posts = this.props.posts
+        let item = posts.map(data => {
+            return <p key={data.id}>{data.name} </p>
+        })
         return (
             <div>
-                {posts}
+                {item}
+                Hello
             </div>
         )
     }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostList)

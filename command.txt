@@ -1,0 +1,2 @@
+Mongodb: 
+/Users/tianhaoyang/mongodb/bin/mongod --dbpath=/Users/tianhaoyang/mongodb-data

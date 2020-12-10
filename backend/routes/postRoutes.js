@@ -45,4 +45,26 @@ router.post("/", async (req, res) => {
     }
 })
 
+router.delete('/:id', async (req, res) => {
+    try {
+        const post = await Post.findByIdAndDelete(req.params.id)
+        if (!post) {
+            return res.status(404).json()
+        }
+        res.json(post)
+    } catch (e) {
+        res.status(500).json()
+    }
+})
+
+router.put('/:id', async (req, res) => {
+    try {
+        const post = await Post.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+        if (!post) return res.status(404).json()
+        res.send(post)
+    } catch (e) {
+        res.status(400).json(e)
+    }
+})
+
 module.exports = router;

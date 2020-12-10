@@ -1,40 +1,35 @@
 import React, { Component } from 'react'
-import { Layout, Menu, Breadcrumb } from 'antd';
+// import { Layout, Menu, Breadcrumb } from 'antd';
 import './PostList.css';
 import 'antd/dist/antd.css';
 import { mapStateToProps, mapDispatchToProps } from '../mapToProps'
 import { connect } from 'react-redux'
-const { Header, Content, Footer } = Layout;
+// const { Header, Content, Footer } = Layout;
 
 class PostList extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
-            posts: []
+            posts: [this.props.posts]
         }
     }
 
-    componentDidMount() {
-        console.warn("ComponentDidMount")
-        this.props.onReadPost()
-        this.setState({ posts: this.props.posts })
-    }
 
     static getDerviedStateFromProps(props, state) {
-        console.warn("getDerviedStateFromProps", props, state)
-        return 0
+        console.warn("hook", props, state)
+        return { posts: props }
     }
 
     render() {
         console.warn("render")
-        let posts = this.props.posts
+        console.log(this.state.posts)
+        let posts = this.props.hello
         let item = posts.map(data => {
             return <p key={data.id}>{data.name} </p>
         })
         return (
             <div>
                 {item}
-                Hello
             </div>
         )
     }

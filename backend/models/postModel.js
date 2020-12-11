@@ -1,10 +1,9 @@
 const mongoose = require("mongoose")
 
 const postSchema = new mongoose.Schema({
+    author: { type: String, required: true },
     title: { type: String, required: true },
-    // createdAt: { type: Date, required: true },
-    // tags: { type: [String] },
-    // html: { type: String, required: true }
+    content: { type: String }
 })
 
 module.exports = Post = mongoose.model("post", postSchema)

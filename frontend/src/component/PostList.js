@@ -15,72 +15,45 @@ class PostList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            posts: [this.props.posts]
+            posts: [this.props.posts],
+            updatePost: { author: "", title: "", content: "" }
         }
-    }
-
-    static getDerviedStateFromProps(props, state) {
-        console.warn("hook", props, state)
-        return { posts: props }
     }
 
     render() {
         console.warn("render")
-        console.log(this.state.posts)
-        let posts = this.props.hello
-        let item = posts.map(data => {
-            return <p key={data.id}>{data.name} </p>
+        let posts = this.props.posts
+        let updateData = { author: "update author", title: "update title", content: "update content" }
+        let addData = { author: "Third author", title: "Third title", content: "Third content" }
+        let items = posts.map(data => {
+            return (
+                <div>
+                    <p key={data._id}>{data.author}, {data.title}, {data.content}, {data._id} </p>
+                    <button type="button" onClick={() => { this.props.onUpdatePost(data._id, updateData) }}>Update</button>
+                    <button type="button" onClick={() => this.props.onRemovePost(data._id)}>Delete</button>
+                </div>
+            )
         })
-
         return (
-            <Layout>
-                <Header className="header">
-                    <div className="logo" />
-                    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-                        <Menu.Item key="1">nav 1</Menu.Item>
-                        <Menu.Item key="2">nav 2</Menu.Item>
-                        <Menu.Item key="3">nav 3</Menu.Item>
-                    </Menu>
-                </Header>
-                <Content style={{ padding: '0 50px' }}>
-                    <Breadcrumb style={{ margin: '16px 0' }}>
-                        <Breadcrumb.Item>Home</Breadcrumb.Item>
-                        <Breadcrumb.Item>List</Breadcrumb.Item>
-                        <Breadcrumb.Item>App</Breadcrumb.Item>
-                    </Breadcrumb>
-                    <Layout className="site-layout-background" style={{ padding: '24px 0' }}>
-                        <Sider className="site-layout-background" width={200}>
-                            <Menu
-                                mode="inline"
-                                defaultSelectedKeys={['1']}
-                                defaultOpenKeys={['sub1']}
-                                style={{ height: '100%' }}
-                            >
-                                <SubMenu key="sub1" icon={<UserOutlined />} title="subnav 1">
-                                    <Menu.Item key="1">option1</Menu.Item>
-                                    <Menu.Item key="2">option2</Menu.Item>
-                                    <Menu.Item key="3">option3</Menu.Item>
-                                    <Menu.Item key="4">option4</Menu.Item>
-                                </SubMenu>
-                                <SubMenu key="sub2" icon={<LaptopOutlined />} title="subnav 2">
-                                    <Menu.Item key="5">option5</Menu.Item>
-                                    <Menu.Item key="6">option6</Menu.Item>
-                                    <Menu.Item key="7">option7</Menu.Item>
-                                    <Menu.Item key="8">option8</Menu.Item>
-                                </SubMenu>
-                                <SubMenu key="sub3" icon={<NotificationOutlined />} title="subnav 3">
-                                    <Menu.Item key="9">option9</Menu.Item>
-                                    <Menu.Item key="10">option10</Menu.Item>
-                                    <Menu.Item key="11">option11</Menu.Item>
-                                    <Menu.Item key="12">option12</Menu.Item>
-                                </SubMenu>
-                            </Menu>
-                        </Sider>
-                        <Content style={{ padding: '0 24px', minHeight: 280 }}>Content</Content>
-                    </Layout>
-                </Content>
-                <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
-            </Layout>
+            <>
+                <form >
+                    <label >Author: </label>
+                    <input type='text' onChange={(e) => console.log(e.target.value)} />
+                    <label >Title: </label>
+                    <input type='text' onChange={(e) => console.log(e.target.value)} />
+                    <label >Content: </label>
+                    <input type='text' onChange={(e) => console.log(e.target.value)} />
+                    <input type='submit' value='Submit' />
+                    <button type="button" onClick={() => {
+                        this.props.onAddPost(addData)
+                        this.props.onRemovePost()
+                    }}>Add</button>
+                </form>
+                <div>
+                    {items}
+                </div>
+
+            </>
         )
     }
 }

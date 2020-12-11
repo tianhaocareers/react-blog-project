@@ -3,21 +3,19 @@ const Post = require("../models/postModel")
 
 router.post('/', async (req, res) => {
     //retrieve data from request
-    const { title, createAt, tags, html } = req.body
-    console.log(title, createAt, tags, html)
+    const { author, title, content } = req.body
+    console.log(author, title, content)
 
     //construct the post Model
     const newPost = new Post({
+        author,
         title,
-        // createAt, 
-        // tags,
-        // html
+        content
     })
     //save post model
     try {
         const savedPost = await newPost.save()
         res.status(200).json(savedPost)
-        console.log(savedPost)
     }
     catch (err) {
         console.error(err)

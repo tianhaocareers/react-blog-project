@@ -12,12 +12,34 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 posts: action.payload
             }
+
         case actionTypes.UPDATEPOST:
-            return state
+            console.log("Connected to UPDATEPOST reducer")
+            const updatePost = action.payload
+            const newArray = state.posts.map(posts => {
+                if (posts._id === action.id) {
+                    return updatePost
+                }
+                return posts
+            })
+            return {
+                ...state,
+                posts: newArray
+            }
+
         case actionTypes.CREATEPOST:
-            return state
+            console.log("Connected to CREATEPOST reducer")
+            return {
+                ...state,
+                posts: [...state.posts, action.payload]
+            }
+
         case actionTypes.REMOVEPOST:
-            return state
+            console.log("Connected to REMOVEPOST reducer")
+            return {
+                ...state,
+                posts: state.posts.filter(posts => posts._id !== action.payload)
+            }
         default:
             return state
     }

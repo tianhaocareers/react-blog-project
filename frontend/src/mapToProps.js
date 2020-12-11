@@ -8,6 +8,9 @@ export const mapStateToProps = state => {
 
 export const mapDispatchToProps = dispatch => {
     return {
-        onReadPost: () => dispatch(actionCreators.onReadPost())
+        onReadPost: () => dispatch(actionCreators.onReadPost()),
+        onAddPost: (data) => dispatch(actionCreators.onAddPost(data)),
+        onUpdatePost: (id, data) => dispatch(actionCreators.onUpdatePost(id, data)),
+        onRemovePost: (id) => dispatch(actionCreators.onRemovePost(id))
     }
 }

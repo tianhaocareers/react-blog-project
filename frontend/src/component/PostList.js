@@ -20,6 +20,12 @@ class PostList extends Component {
         }
     }
 
+    componentDidMount() {
+        console.warn("ComponentDidMount")
+        this.props.onReadPost()
+        this.setState({ posts: this.props.posts })
+    }
+
     render() {
         console.warn("render")
         let posts = this.props.posts
@@ -46,7 +52,7 @@ class PostList extends Component {
                     <input type='submit' value='Submit' />
                     <button type="button" onClick={() => {
                         this.props.onAddPost(addData)
-                        this.props.onRemovePost()
+                        this.props.onReadPost()
                     }}>Add</button>
                 </form>
                 <div>

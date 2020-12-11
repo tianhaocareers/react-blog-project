@@ -8,16 +8,8 @@ class App extends React.Component {
     super()
     this.state = { posts: [] }
   }
-  componentDidMount() {
-    console.warn("ComponentDidMount")
-    this.props.onReadPost()
-    this.setState({ posts: this.props.posts })
-  }
 
-  shouldComponentUpdate(prevProps, preState) {
-    console.log(prevProps.posts, preState)
-    return true
-  }
+
   render() {
     console.log("state", this.state.posts)
     return (

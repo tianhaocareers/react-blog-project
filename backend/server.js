@@ -13,6 +13,7 @@ app.listen(PORT, () => console.log(`Server started on port: ${PORT}`))
 
 //set up routes
 app.use('/posts', require("./routes/postRoutes"))
+app.use('/', require("./routes/userRouter"))
 
 //set up mongoose
 console.log("Connecting to MongoDB")

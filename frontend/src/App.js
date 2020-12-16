@@ -1,31 +1,37 @@
 import React from 'react'
-// import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import PostList from './component/PostList/PostList'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { mapStateToProps, mapDispatchToProps } from './mapToProps'
 import { connect } from 'react-redux'
-import Login from './component/Login/Login'
-import Register from './component/Register/Register'
+import Login from './component/auth/Login'
+import Register from './component/auth/Register'
+import Home from './component/page/Home'
 
 class App extends React.Component {
   constructor() {
     super()
-    this.state = { posts: [] }
+    this.state = {
+      token: undefined,
+      user: undefined
+    }
   }
 
+  componentDidMount() {
+    console.warn("componentDidMount")
+  }
 
   render() {
-    console.log("state", this.state.posts)
+    console.warn("render")
     return (
-      // <BrowserRouter>
-      //   <Switch>
-      //     <Route path="/posts" component={PostList} />
-      //   </Switch>
-      // </BrowserRouter>
-      // <PostList hello={this.props.posts}></PostList>
       <>
-        <Login></Login>
-
-        <Register></Register>
+        <BrowserRouter>
+          <div className="container">
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route path="/login" component={Login} />
+              <Route path="/register" component={Register} />
+            </Switch>
+          </div>
+        </BrowserRouter>
       </>
     )
   }

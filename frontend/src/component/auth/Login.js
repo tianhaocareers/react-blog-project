@@ -1,77 +1,53 @@
-import React, { Component } from 'react'
-import { Form, Input, Button, Checkbox } from 'antd'
+import React, { useState, useContext } from 'react'
+import { useHistory } from 'react-router-dom'
+import UserContext from '../../context/userContext'
+import axios from 'axios'
 
-const layout = {
-    labelCol: {
-        span: 8,
-    },
-    wrapperCol: {
-        span: 16,
-    },
-};
-const tailLayout = {
-    wrapperCol: {
-        offset: 8,
-        span: 16,
-    },
-};
+const Login = () => {
+    const [email, setEmail] = useState()
+    const [password, setPassword] = useState()
 
-export default class Login extends Component {
-    onFinish = (values) => {
-        console.log('Success:', values);
-    };
+    const { setUserData } = useContext(UserContext)
+    const history = useHistory()
 
-    onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    };
-
-    render() {
-        return (
-            <Form
-                {...layout}
-                name="basic"
-                initialValues={{
-                    remember: true,
-                }}
-                onFinish={this.onFinish}
-                onFinishFailed={this.onFinishFailed}
-            >
-                <Form.Item
-                    label="Username"
-                    name="username"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your username!',
-                        },
-                    ]}
-                >
-                    <Input />
-                </Form.Item>
-
-                <Form.Item
-                    label="Password"
-                    name="password"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your password!',
-                        },
-                    ]}
-                >
-                    <Input.Password />
-                </Form.Item>
-
-                <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-                    <Checkbox>Remember me</Checkbox>
-                </Form.Item>
-
-                <Form.Item {...tailLayout}>
-                    <Button type="primary" htmlType="submit" onClick={() => console.log("Submit User and pincode")}>
-                        Submit
-                </Button>
-                </Form.Item>
-            </Form>
-        );
+    const submit = async (e) => {
+        e.preventDefault()
+        try {
+            const loginUser = { email, password }
+            const loginRes = await axios.post(
+                "http://localhost:4000/users/login",
+                loginUser
+            );
+            setUserData({
+                token: loginRes.data.token,
+                user: loginRes.data.user
+            })
+            localStorage.setItem("auth-token", loginRes.data.token)
+            history.push("/")
+        } catch (err) {
+            console.log("here is Error", err)
+        }
     }
+    return (
+        <div>
+            <h2>Log in</h2>
+            <form onSubmit={submit}>
+                <label htmlFor="login-email">Email</label>
+                <input
+                    id="login-email"
+                    type="email"
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <label htmlFor="login-password">Password</label>
+                <input
+                    id="login-password"
+                    type="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <input type='submit' value='log in'></input>
+            </form>
+        </div>
+    )
 }
+
+export default Login

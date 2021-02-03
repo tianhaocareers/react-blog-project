@@ -1,40 +1,60 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import Axios from 'axios'
 import { mapStateToProps, mapDispatchToProps } from './mapToProps'
 import { connect } from 'react-redux'
+//component
 import Login from './component/auth/Login'
 import Register from './component/auth/Register'
 import Home from './component/page/Home'
+import UserContext from "./context/UserContext";
 
-class App extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      token: undefined,
-      user: undefined
+
+const App = () => {
+  const [userData, setUserData] = useState(() => {
+    return {
+      user: undefined,
+      token: undefined
     }
-  }
+  })
+  //fetching data from the API endpoint 
+  useEffect(() => {
+    const checkLoggedIn = async () => {
+      let token = localStorage.getItem("auth-token")
+      if (token === null) {
+        localStorage.setItem("auth-token", "")
+        token = ""
+      }
+      const tokenRes = await Axios.post("http://localhost:4000/users/tokenIsValid", null, { headers: { "x-auth-token": token } })
 
-  componentDidMount() {
-    console.warn("componentDidMount")
-  }
+      if (tokenRes.data) {
+        const userRes = await Axios.get("http://localhost:4000/users/", {
+          headers: { "x-auth-token": token }
+        })
 
-  render() {
-    console.warn("render")
-    return (
-      <>
-        <BrowserRouter>
+        setUserData({
+          token,
+          user: userRes.data
+        })
+      }
+    }
+    checkLoggedIn()
+  }, [])
+
+  return (
+    <>
+      <BrowserRouter>
+        <UserContext.Provider value={{ userData, setUserData }}>
           <div className="container">
             <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/login" component={Login} />
               <Route path="/register" component={Register} />
             </Switch>
-          </div>
-        </BrowserRouter>
-      </>
-    )
-  }
+          </div></UserContext.Provider>
+      </BrowserRouter>
+    </>
+  )
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
